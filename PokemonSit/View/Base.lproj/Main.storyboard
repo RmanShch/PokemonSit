@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Pokemon List View Controller-->
+        <!--Pokemons-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="PokemonListViewController" customModule="PokemonSit" customModuleProvider="target" sceneMemberID="viewController">
@@ -49,7 +49,7 @@
                             <constraint firstItem="ubq-CL-X6D" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dIJ-cf-ieI"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Sdk-5O-hAi"/>
+                    <navigationItem key="navigationItem" title="Pokemons" id="Sdk-5O-hAi"/>
                     <connections>
                         <outlet property="pokemonsTableView" destination="ubq-CL-X6D" id="qH3-Ea-PRl"/>
                     </connections>

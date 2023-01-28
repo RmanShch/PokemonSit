@@ -9,7 +9,8 @@ import UIKit
 
 protocol PokemonView: AnyObject {
     func pokemonsLoaded(pokemons: [Pokemon])
-    
+    func pokemonLoaded(pokemon: Pokemon, for indexPath: [IndexPath])
+    func loadingFinished()
 }
 
 class PokemonListViewController: UIViewController, PokemonView {
@@ -17,6 +18,7 @@ class PokemonListViewController: UIViewController, PokemonView {
     
     private var pokemonPresenter = PokemonPresenter()
     private var pokemons: [Pokemon] = []
+    private var isLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +26,7 @@ class PokemonListViewController: UIViewController, PokemonView {
         pokemonPresenter.setDelegate(pokemonView: self)
         setUpTableView()
         pokemonPresenter.viewDidLoad()
+        setUpNavigationBar()
     }
     
     private func setUpTableView() {
@@ -31,15 +34,29 @@ class PokemonListViewController: UIViewController, PokemonView {
         pokemonsTableView.dataSource = self
     }
     
-    
+    private func setUpNavigationBar() {
+        //navigationController?.navigationBar.largeContentTitle = "Pokemons"
+    }
     
     func pokemonsLoaded(pokemons: [Pokemon]) {
         self.pokemons = pokemons
         pokemonsTableView.reloadData()
     }
+    
+    func pokemonLoaded(pokemon: Pokemon, for indexPath: [IndexPath]) {
+        self.pokemons.append(pokemon)
+        pokemonsTableView.insertRows(at: indexPath, with: .fade)
+    }
+    
+    func loadingFinished() {
+        isLoading = false
+    }
 }
 
 extension PokemonListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        pokemonPresenter.pokemonSelected(pokemon: pokemons[indexPath.row])
+    }
     
 }
 extension PokemonListViewController: UITableViewDataSource {
@@ -58,4 +75,18 @@ extension PokemonListViewController: UITableViewDataSource {
     }
     
     
+}
+
+extension PokemonListViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let myHeight = scrollView.frame.height - 100
+        
+        guard !isLoading else { return }
+        if offsetY > (contentHeight - myHeight) {
+            isLoading = true
+            pokemonPresenter.loadMorePokemons()
+        }
+    }
 }

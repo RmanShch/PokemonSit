@@ -9,15 +9,23 @@ import Foundation
 
 class DataFetcherService {
     var dataFetcher: DataFetcher
-    private var pokemonListURLString = "https://pokeapi.co/api/v2/pokemon"
+    
     
     init(dataFetcher: DataFetcher = NetworkDataFetcher()) {
         self.dataFetcher = dataFetcher
     }
     
-    func fetchAllPokemons(urlString: String, completion: @escaping (PokemonList?) -> Void) {
-        
+    func fetchPokemons(completion: @escaping (PokemonList?) -> Void) {
+        let pokemonListURLString = "https://pokeapi.co/api/v2/pokemon"
         dataFetcher.fetchJSONData(urlString: pokemonListURLString, completion: completion)
     }
     
+    func fetchMorePokemons(urlString: String, completion: @escaping (PokemonList?) -> Void) {
+        
+        dataFetcher.fetchJSONData(urlString: urlString, completion: completion)
+    }
+    
+    func fetchPokemonInfo(urlString: String, completion: @escaping (PokemonDetails?) -> Void) {
+        dataFetcher.fetchJSONData(urlString: urlString, completion: completion)
+    }
 }
