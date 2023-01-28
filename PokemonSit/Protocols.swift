@@ -7,7 +7,4 @@
 
 import Foundation
 
-protocol PokemonPresenterDelegate: AnyObject {
-    
-    
-}
+
