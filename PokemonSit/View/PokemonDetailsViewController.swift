@@ -7,50 +7,34 @@
 
 import UIKit
 
-protocol PokemonDetailsVCDelegate: AnyObject {
-    
+protocol PokemonDetailsView: AnyObject {
+    func setImage(with imageData: Data?)
 }
 
-class PokemonDetailsViewController: UIViewController {
+class PokemonDetailsViewController: UIViewController, PokemonDetailsView {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var weightLabel: UILabel!
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
     
-    weak var delegate: PokemonDetailsVCDelegate?
-    weak var presenter: Presenter?
+    weak var presenter: DetailsPresenter?
     
     var name: String?
     var weight: Int?
     var height: Int?
     var types: [String]?
     var imageUrl: String?
-    var image: UIImage?
-    
-//    init(name: String, weight: Int, height: Int, types: [String], image: UIImage?) {
-////        self.name = name
-////        self.weight = weight
-////        self.height = height
-////        self.types = types
-////        self.image = image
-//        super.init(nibName: nil, bundle: nil)
-//    }
-    
-//    required init?(coder: NSCoder) {
-//        fatalError("initialization failed with error")
-//    }
-    
-
-    
+    var imageData: Data?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setUpSubviews()
+        presenter?.setDelegate(pokemonDetailsView: self)
+        presenter?.viewDidLoad()
+        setSubviews()
     }
     
-    func setUpSubviews() {
+    func setSubviews() {
         nameLabel.text = name
         weightLabel.text = "Weight: \(String(describing: weight))"
         heightLabel.text = "Height: \(String(describing: height))"
@@ -62,8 +46,17 @@ class PokemonDetailsViewController: UIViewController {
         
         //typeLabel.text = typeLabelText
         
-        guard let pokemonImage = image else { return }
+        guard let imageData = imageData else { return }
+        let image = UIImage(data: imageData)
+        imageView.image = image
+        
         //imageView.image = pokemonImage
+    }
+    
+    func setImage(with imageData: Data?) {
+        guard let data = imageData else { return }
+        let image = UIImage(data: data)
+        imageView.image = image
     }
     
 }

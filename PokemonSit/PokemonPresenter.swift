@@ -19,7 +19,7 @@ class PokemonPresenter: Presenter {
     private var pokemons: [Pokemon] = []
     
     
-    func setDelegate(pokemonView: PokemonView?) {
+    func setDelegate(pokemonView: PokemonView) {
         self.pokemonView = pokemonView
     }
     
@@ -35,7 +35,8 @@ class PokemonPresenter: Presenter {
     
     func pokemonSelected(pokemon: Pokemon) {
         let urlString = pokemon.url
-        dataFetchService.fetchPokemonInfo(urlString: urlString) { pokemon in
+        let presenter = PokemonDetailsPresenter()
+        dataFetchService.fetchPokemonInfo(urlString: urlString) { [weak self] pokemon in
             guard let pokemon = pokemon else { return }
             let name = pokemon.name
             let imageUrlString = pokemon.sprites.frontDefault
@@ -46,9 +47,8 @@ class PokemonPresenter: Presenter {
             let weight = pokemon.weight
             let height = pokemon.height
             print("\(name.capitalized), weight - \(weight), height - \(height), type - \(types[0]) \n \(imageUrlString)")
-            
-            
-            self.pokemonView?.showPokemonDetails(name: name, weight: weight, height: height, types: types, image: nil)
+            presenter.pokemon = pokemon
+            self?.pokemonView?.setUpDetailsView(name: name, weight: weight, height: height, types: types, presenter: presenter)
         }
         
     }

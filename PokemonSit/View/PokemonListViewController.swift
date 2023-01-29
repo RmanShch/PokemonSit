@@ -11,12 +11,13 @@ protocol PokemonView: AnyObject {
     func pokemonsLoaded(pokemons: [Pokemon])
     func pokemonLoaded(pokemon: Pokemon, for indexPath: [IndexPath])
     func loadingFinished()
-    func showPokemonDetails(name: String, weight: Int, height: Int, types: [String], image: UIImage?)
+    func setUpDetailsView(name: String, weight: Int, height: Int, types: [String], presenter: PokemonDetailsPresenter)
 }
 
-class PokemonListViewController: UIViewController, PokemonView, PokemonDetailsVCDelegate {
+class PokemonListViewController: UIViewController, PokemonView {
     @IBOutlet weak var pokemonsTableView: UITableView!
     
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     private var pokemonPresenter = PokemonPresenter()
     private var pokemons: [Pokemon] = []
     private var isLoading = false
@@ -25,7 +26,7 @@ class PokemonListViewController: UIViewController, PokemonView, PokemonDetailsVC
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        activityIndicatorView.startAnimating()
         pokemonPresenter.setDelegate(pokemonView: self)
         setUpTableView()
         pokemonPresenter.viewDidLoad()
@@ -35,6 +36,7 @@ class PokemonListViewController: UIViewController, PokemonView, PokemonDetailsVC
     private func setUpTableView() {
         pokemonsTableView.delegate = self
         pokemonsTableView.dataSource = self
+        pokemonsTableView.alpha = 0
     }
     
     private func setUpNavigationBar() {
@@ -43,7 +45,13 @@ class PokemonListViewController: UIViewController, PokemonView, PokemonDetailsVC
     
     func pokemonsLoaded(pokemons: [Pokemon]) {
         self.pokemons = pokemons
-        pokemonsTableView.reloadData()
+//        activityIndicatorView.stopAnimating()
+        UIView.animate(withDuration: 0.3) {
+            self.activityIndicatorView.stopAnimating()
+            self.pokemonsTableView.reloadData()
+            self.pokemonsTableView.alpha = 1
+        }
+        //pokemonsTableView.reloadData()
     }
     
     func pokemonLoaded(pokemon: Pokemon, for indexPath: [IndexPath]) {
@@ -53,20 +61,19 @@ class PokemonListViewController: UIViewController, PokemonView, PokemonDetailsVC
     
     func loadingFinished() {
         isLoading = false
+        activityIndicatorView.stopAnimating()
     }
     
-    func showPokemonDetails(name: String, weight: Int, height: Int, types: [String], image: UIImage?) {
+    func setUpDetailsView(name: String, weight: Int, height: Int, types: [String], presenter: PokemonDetailsPresenter) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let pokemonDetailsViewController = storyboard.instantiateViewController(identifier: "PokemonDetailsVC") as? PokemonDetailsViewController else { return }
 //        guard let detailsVC = pokemonDetailsViewController as? PokemonDetailsViewController else { return }
         
-        pokemonDetailsViewController.delegate = self
         pokemonDetailsViewController.name = name.capitalized
         pokemonDetailsViewController.weight = weight
         pokemonDetailsViewController.height = height
         pokemonDetailsViewController.types = types
-        //pokemonDetailsViewController.presenter = pokemonPresenter
-        
+        pokemonDetailsViewController.presenter = presenter
         navigationController?.pushViewController(pokemonDetailsViewController, animated: true)
     }
 }
@@ -104,6 +111,7 @@ extension PokemonListViewController: UIScrollViewDelegate {
         guard !isLoading else { return }
         if offsetY > (contentHeight - myHeight) {
             isLoading = true
+            activityIndicatorView.startAnimating()
             pokemonPresenter.loadMorePokemons()
         }
     }
