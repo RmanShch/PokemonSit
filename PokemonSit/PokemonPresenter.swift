@@ -35,7 +35,6 @@ class PokemonPresenter: Presenter {
     
     func pokemonSelected(pokemon: Pokemon) {
         let urlString = pokemon.url
-        let presenter = PokemonDetailsPresenter()
         dataFetchService.fetchPokemonInfo(urlString: urlString) { [weak self] pokemon in
             guard let pokemon = pokemon else { return }
             let name = pokemon.name
@@ -46,12 +45,14 @@ class PokemonPresenter: Presenter {
             }
             let weight = pokemon.weight
             let height = pokemon.height
+            print(urlString)
             print("\(name.capitalized), weight - \(weight), height - \(height), type - \(types[0]) \n \(imageUrlString)")
-            presenter.pokemon = pokemon
+            let presenter = PokemonDetailsPresenter(pokemon: pokemon, dataFetchService: (self?.dataFetchService)!)
             self?.pokemonView?.setUpDetailsView(name: name, weight: weight, height: height, types: types, presenter: presenter)
         }
-        
     }
+    
+    
     
     func loadMorePokemons() {
         guard let urlString = nextUrl else { return }

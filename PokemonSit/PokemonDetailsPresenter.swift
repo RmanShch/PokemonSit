@@ -10,20 +10,24 @@ import Foundation
 protocol DetailsPresenter: AnyObject {
     func setDelegate(pokemonDetailsView: PokemonDetailsView)
     func viewDidLoad()
-    
 }
 
 class PokemonDetailsPresenter: DetailsPresenter {
     weak private var pokemonDetailsView: PokemonDetailsView?
-    private var dataFetchService = DataFetcherService()
-    var pokemon: PokemonDetails?
+    let dataFetchService: DataFetcherService
+    let pokemon: PokemonDetails
+    
+    init(pokemon: PokemonDetails, dataFetchService: DataFetcherService) {
+        self.pokemon = pokemon
+        self.dataFetchService = dataFetchService
+    }
     
     func setDelegate(pokemonDetailsView: PokemonDetailsView) {
         self.pokemonDetailsView = pokemonDetailsView
     }
     
     func viewDidLoad() {
-        guard let imageUrl = pokemon?.sprites.frontDefault else { return }
+        let imageUrl = pokemon.sprites.frontDefault
         dataFetchService.fetchImage(urlString: imageUrl) { [weak self] imageData in
             guard let imageData = imageData else { return }
             self?.pokemonDetailsView?.setImage(with: imageData)

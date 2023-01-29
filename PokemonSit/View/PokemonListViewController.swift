@@ -66,7 +66,7 @@ class PokemonListViewController: UIViewController, PokemonView {
     
     func setUpDetailsView(name: String, weight: Int, height: Int, types: [String], presenter: PokemonDetailsPresenter) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let pokemonDetailsViewController = storyboard.instantiateViewController(identifier: "PokemonDetailsVC") as? PokemonDetailsViewController else { return }
+        let pokemonDetailsViewController = storyboard.instantiateViewController(identifier: "PokemonDetailsVC") as PokemonDetailsViewController
 //        guard let detailsVC = pokemonDetailsViewController as? PokemonDetailsViewController else { return }
         
         pokemonDetailsViewController.name = name.capitalized

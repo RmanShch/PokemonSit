@@ -18,7 +18,7 @@ class PokemonDetailsViewController: UIViewController, PokemonDetailsView {
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
     
-    weak var presenter: DetailsPresenter?
+    var presenter: DetailsPresenter?
     
     var name: String?
     var weight: Int?
