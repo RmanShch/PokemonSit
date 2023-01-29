@@ -19,6 +19,7 @@
 		61484C782985887200BCAEEB /* NetworkDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61484C772985887200BCAEEB /* NetworkDataFetcher.swift */; };
 		61484C7A298588A900BCAEEB /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61484C79298588A900BCAEEB /* NetworkService.swift */; };
 		61484C7C29858D2700BCAEEB /* DataFetcherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61484C7B29858D2700BCAEEB /* DataFetcherService.swift */; };
+		61484C822985CA6400BCAEEB /* PokemonDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61484C812985CA6300BCAEEB /* PokemonDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		61484C772985887200BCAEEB /* NetworkDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetcher.swift; sourceTree = "<group>"; };
 		61484C79298588A900BCAEEB /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		61484C7B29858D2700BCAEEB /* DataFetcherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFetcherService.swift; sourceTree = "<group>"; };
+		61484C812985CA6300BCAEEB /* PokemonDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				6145A8A82982B30800917DFA /* PokemonListViewController.swift */,
+				61484C812985CA6300BCAEEB /* PokemonDetailsViewController.swift */,
 				6145A8AA2982B30800917DFA /* Main.storyboard */,
 			);
 			path = View;
@@ -189,6 +192,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61484C782985887200BCAEEB /* NetworkDataFetcher.swift in Sources */,
+				61484C822985CA6400BCAEEB /* PokemonDetailsViewController.swift in Sources */,
 				61484C742985811800BCAEEB /* Protocols.swift in Sources */,
 				61484C7A298588A900BCAEEB /* NetworkService.swift in Sources */,
 				6145A8A92982B30800917DFA /* PokemonListViewController.swift in Sources */,

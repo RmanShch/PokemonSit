@@ -11,14 +11,17 @@ protocol PokemonView: AnyObject {
     func pokemonsLoaded(pokemons: [Pokemon])
     func pokemonLoaded(pokemon: Pokemon, for indexPath: [IndexPath])
     func loadingFinished()
+    func showPokemonDetails(name: String, weight: Int, height: Int, types: [String], image: UIImage?)
 }
 
-class PokemonListViewController: UIViewController, PokemonView {
+class PokemonListViewController: UIViewController, PokemonView, PokemonDetailsVCDelegate {
     @IBOutlet weak var pokemonsTableView: UITableView!
     
     private var pokemonPresenter = PokemonPresenter()
     private var pokemons: [Pokemon] = []
     private var isLoading = false
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +53,21 @@ class PokemonListViewController: UIViewController, PokemonView {
     
     func loadingFinished() {
         isLoading = false
+    }
+    
+    func showPokemonDetails(name: String, weight: Int, height: Int, types: [String], image: UIImage?) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let pokemonDetailsViewController = storyboard.instantiateViewController(identifier: "PokemonDetailsVC") as? PokemonDetailsViewController else { return }
+//        guard let detailsVC = pokemonDetailsViewController as? PokemonDetailsViewController else { return }
+        
+        pokemonDetailsViewController.delegate = self
+        pokemonDetailsViewController.name = name.capitalized
+        pokemonDetailsViewController.weight = weight
+        pokemonDetailsViewController.height = height
+        pokemonDetailsViewController.types = types
+        //pokemonDetailsViewController.presenter = pokemonPresenter
+        
+        navigationController?.pushViewController(pokemonDetailsViewController, animated: true)
     }
 }
 

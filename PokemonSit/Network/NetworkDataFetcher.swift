@@ -9,6 +9,7 @@ import Foundation
 
 protocol DataFetcher {
     func fetchJSONData<T: Decodable>(urlString: String, completion: @escaping (T?) -> Void)
+    func fetchImage(urlString: String, completion: @escaping (Data?) -> Void)
 }
 
 class NetworkDataFetcher: DataFetcher {
@@ -40,6 +41,17 @@ class NetworkDataFetcher: DataFetcher {
         } catch let decodeError {
             print("Failed to decode JSON", decodeError)
             return nil
+        }
+    }
+    
+    func fetchImage(urlString: String, completion: @escaping (Data?) -> Void) {
+        networking.request(urlString: urlString) { data, error in
+            if let error = error {
+                print("Error recieved requesting data: \(error.localizedDescription)")
+                completion(nil)
+            }
+            
+            completion(data)
         }
     }
     

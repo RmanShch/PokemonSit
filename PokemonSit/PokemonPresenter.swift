@@ -7,8 +7,9 @@
 
 import Foundation
 
-protocol Presenter {
+protocol Presenter: AnyObject {
     func pokemonSelected(pokemon: Pokemon)
+    
 }
 
 class PokemonPresenter: Presenter {
@@ -45,7 +46,11 @@ class PokemonPresenter: Presenter {
             let weight = pokemon.weight
             let height = pokemon.height
             print("\(name.capitalized), weight - \(weight), height - \(height), type - \(types[0]) \n \(imageUrlString)")
+            
+            
+            self.pokemonView?.showPokemonDetails(name: name, weight: weight, height: height, types: types, image: nil)
         }
+        
     }
     
     func loadMorePokemons() {

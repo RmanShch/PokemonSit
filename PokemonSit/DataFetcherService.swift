@@ -28,4 +28,9 @@ class DataFetcherService {
     func fetchPokemonInfo(urlString: String, completion: @escaping (PokemonDetails?) -> Void) {
         dataFetcher.fetchJSONData(urlString: urlString, completion: completion)
     }
+    
+    func fetchImage(urlString: String, completion: @escaping (Data?) -> Void) {
+        dataFetcher.fetchImage(urlString: urlString, completion: completion)
+
+    }
 }
