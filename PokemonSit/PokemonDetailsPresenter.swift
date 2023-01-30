@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol DetailPresenterDelegate: AnyObject {
+    func checkConnection() -> Bool
+}
+
 protocol DetailsPresenter: AnyObject {
     func setDelegate(pokemonDetailsView: PokemonDetailsView)
     func viewDidLoad()
@@ -17,6 +21,7 @@ class PokemonDetailsPresenter: DetailsPresenter {
     weak private var pokemonDetailsView: PokemonDetailsView?
     let dataFetchService: DataFetcherService
     let pokemon: PokemonDetails
+    weak var delegate: DetailPresenterDelegate?
     
     init(pokemon: PokemonDetails, dataFetchService: DataFetcherService) {
         self.pokemon = pokemon
@@ -28,8 +33,9 @@ class PokemonDetailsPresenter: DetailsPresenter {
     }
     
     func viewDidLoad() {
+        guard let networkConnection = delegate?.checkConnection() else { return }
         let imageUrl = pokemon.sprites.frontDefault
-        dataFetchService.fetchImage(urlString: imageUrl) { [weak self] imageData in
+        dataFetchService.fetchImage(fromNetwork: networkConnection, urlString: imageUrl) { [weak self] imageData in
             guard let imageData = imageData else { return }
             self?.pokemonDetailsView?.setImage(with: imageData)
         }

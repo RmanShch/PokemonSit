@@ -7,35 +7,70 @@
 
 import Foundation
 
-protocol Presenter: AnyObject {
-    func pokemonSelected(pokemon: Pokemon)
-    
-}
-
-class PokemonPresenter: Presenter {
+class PokemonPresenter {
     weak private var pokemonView: PokemonView?
-    private var dataFetchService = DataFetcherService()
+    private var dataFetchService: DataFetcherService?
+    private var reachabilityChecker: Reachability!
+    private var persistenceManager: PersistenceManager?
     private var nextUrl: String?
     private var pokemons: [Pokemon] = []
-    
+    private var networkConnection = false {
+        willSet {
+            pokemonView?.reloadData()
+        }
+        //        didSet {
+        //            if networkConnection == true {
+        //                pokemonView?.reloadData()
+        //            }
+        //        }
+    }
     
     func setDelegate(pokemonView: PokemonView) {
         self.pokemonView = pokemonView
+        persistenceManager = UserDefaultsManager()
+        dataFetchService = DataFetcherService(persistenceManager: persistenceManager!)
+        reachabilityChecker = ReachabilityChecker()
     }
     
     func viewDidLoad() {
-        dataFetchService.fetchPokemons() { [weak self] pokemonList in
+        checkNetworkConnection()
+        if networkConnection {
+            fetchPokemons()
+        } else {
+            pokemonView?.showAlert(title: "No internet connection.", message: "Last saved data will be loaded")
+        }
+    }
+    
+    private func checkNetworkConnection() {
+        if reachabilityChecker.isConnectedToNetwork() {
+            networkConnection = true
+        } else {
+            networkConnection = false
+        }
+    }
+    
+    func fetchPokemons() {
+        dataFetchService?.fetchPokemonList(fromNetwork: networkConnection, completion: { [weak self] pokemonList in
             guard let pokemons = pokemonList?.results else { return }
             self?.pokemons += pokemons
             self?.nextUrl = pokemonList?.next
             self?.pokemonView?.pokemonsLoaded(pokemons: pokemons)
-            
-        }
+        })
     }
     
+//    func loadSavedPokemons() {
+//        dataFetchService?.fetchPokemonList(fromNetwork: .dataBase, completion: { [weak self] pokemonList in
+//            guard let pokemons = pokemonList?.results else { return }
+//            self?.pokemons += pokemons
+//            self?.nextUrl = pokemonList?.next
+//            self?.pokemonView?.pokemonsLoaded(pokemons: pokemons)
+//        })
+//    }
+    
     func pokemonSelected(pokemon: Pokemon) {
+        networkConnection = reachabilityChecker.isConnectedToNetwork()
         let urlString = pokemon.url
-        dataFetchService.fetchPokemonInfo(urlString: urlString) { [weak self] pokemon in
+        dataFetchService?.fetchPokemonInfo(fromNetwork: networkConnection, urlString: urlString) { [weak self] pokemon in
             guard let pokemon = pokemon else { return }
             let name = pokemon.name
             let imageUrlString = pokemon.sprites.frontDefault
@@ -48,17 +83,18 @@ class PokemonPresenter: Presenter {
             print(urlString)
             print("\(name.capitalized), weight - \(weight), height - \(height), type - \(types[0]) \n \(imageUrlString)")
             let presenter = PokemonDetailsPresenter(pokemon: pokemon, dataFetchService: (self?.dataFetchService)!)
+            presenter.delegate = self
             self?.pokemonView?.setUpDetailsView(name: name, weight: weight, height: height, types: types, presenter: presenter)
         }
     }
     
-    
-    
+
     func loadMorePokemons() {
+        networkConnection = reachabilityChecker.isConnectedToNetwork()
         guard let urlString = nextUrl else {
             print("no more pokemons")
             return }
-        dataFetchService.fetchMorePokemons(urlString: urlString) { [weak self] pokemonList in
+        dataFetchService?.fetchMorePokemons(fromNetwork: networkConnection, urlString: urlString) { [weak self] pokemonList in
             let pokemonsCountBeforeUpdate = self?.pokemons.count
             guard let pokemons = pokemonList else { return }
             for i in 0...pokemons.results.count-1 {
@@ -73,4 +109,10 @@ class PokemonPresenter: Presenter {
         }
     }
 
+}
+
+extension PokemonPresenter: DetailPresenterDelegate {
+    func checkConnection() -> Bool {
+        return networkConnection
+    }
 }

@@ -12,6 +12,8 @@ protocol PokemonView: AnyObject {
     func pokemonLoaded(pokemon: Pokemon, for indexPath: [IndexPath])
     func loadingFinished()
     func setUpDetailsView(name: String, weight: Int, height: Int, types: [String], presenter: PokemonDetailsPresenter)
+    func showAlert(title: String, message: String)
+    func reloadData()
 }
 
 class PokemonListViewController: UIViewController, PokemonView {
@@ -23,14 +25,12 @@ class PokemonListViewController: UIViewController, PokemonView {
     private var isLoading = false
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         activityIndicatorView.startAnimating()
         pokemonPresenter.setDelegate(pokemonView: self)
         setUpTableView()
         pokemonPresenter.viewDidLoad()
-        setUpNavigationBar()
     }
     
     private func setUpTableView() {
@@ -40,19 +40,13 @@ class PokemonListViewController: UIViewController, PokemonView {
         pokemonsTableView.register(UINib(nibName: "PokemonTableViewCell", bundle: nil), forCellReuseIdentifier: "pokeCell")
     }
     
-    private func setUpNavigationBar() {
-        //navigationController?.navigationBar.largeContentTitle = "Pokemons"
-    }
-    
     func pokemonsLoaded(pokemons: [Pokemon]) {
         self.pokemons = pokemons
-//        activityIndicatorView.stopAnimating()
         UIView.animate(withDuration: 0.3) {
             self.activityIndicatorView.stopAnimating()
             self.pokemonsTableView.reloadData()
             self.pokemonsTableView.alpha = 1
         }
-        //pokemonsTableView.reloadData()
     }
     
     func pokemonLoaded(pokemon: Pokemon, for indexPath: [IndexPath]) {
@@ -77,14 +71,28 @@ class PokemonListViewController: UIViewController, PokemonView {
         pokemonDetailsViewController.presenter = presenter
         navigationController?.pushViewController(pokemonDetailsViewController, animated: true)
     }
+    
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            self?.pokemonPresenter.fetchPokemons()
+        }
+        alertController.addAction(action1)
+        present(alertController, animated: true)
+    }
+    
+    func reloadData() {
+        pokemonsTableView.reloadData()
+    }
+    
 }
 
 extension PokemonListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         pokemonPresenter.pokemonSelected(pokemon: pokemons[indexPath.row])
     }
-    
 }
+
 extension PokemonListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return pokemons.count
