@@ -55,7 +55,9 @@ class PokemonPresenter: Presenter {
     
     
     func loadMorePokemons() {
-        guard let urlString = nextUrl else { return }
+        guard let urlString = nextUrl else {
+            print("no more pokemons")
+            return }
         dataFetchService.fetchMorePokemons(urlString: urlString) { [weak self] pokemonList in
             let pokemonsCountBeforeUpdate = self?.pokemons.count
             guard let pokemons = pokemonList else { return }
@@ -66,6 +68,7 @@ class PokemonPresenter: Presenter {
                 self?.pokemonView?.pokemonLoaded(pokemon: pokemon, for: indexPath)
             }
             self?.pokemonView?.loadingFinished()
+            self?.nextUrl = pokemonList?.next
             print(self?.pokemons.count)
         }
     }

@@ -37,6 +37,7 @@ class PokemonListViewController: UIViewController, PokemonView {
         pokemonsTableView.delegate = self
         pokemonsTableView.dataSource = self
         pokemonsTableView.alpha = 0
+        pokemonsTableView.register(UINib(nibName: "PokemonTableViewCell", bundle: nil), forCellReuseIdentifier: "pokeCell")
     }
     
     private func setUpNavigationBar() {
@@ -90,15 +91,20 @@ extension PokemonListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = pokemonsTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard let cell = pokemonsTableView.dequeueReusableCell(withIdentifier: "pokeCell", for: indexPath) as? PokemonTableViewCell else {
+            return UITableViewCell()
+        }
         
         let pokemon = pokemons[indexPath.row]
         let pokemonName = pokemon.name
-        cell.textLabel?.text = pokemonName
+        cell.setName(name: pokemonName)
         
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 52
+    }
     
 }
 
