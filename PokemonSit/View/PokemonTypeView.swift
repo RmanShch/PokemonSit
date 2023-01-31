@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class PokemonTypeView: UIView {
+    var typeViewManager: ColorAndIconManager?
     
     lazy var imageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 5, y: 5, width: 30, height: 30))
@@ -36,22 +37,24 @@ class PokemonTypeView: UIView {
     }
     
     private func setupView() {
+        typeViewManager = TypeViewManager()
         addSubview(imageView)
         addSubview(typeNameLabel)
         layer.cornerRadius = 5
     }
     
-    func setupColor(color: UIColor) {
+    func setupColor(for typeName: String) {
+        let color = typeViewManager?.getColor(for: typeName)
         backgroundColor = color
     }
     
-    func setupImage(imageName: String) {
-        let image = UIImage(systemName: imageName)
-        imageView.image = image
+    func setupImage(for typeName: String) {
+        let imagee = typeViewManager?.getIcon(for: typeName)
+        imageView.image = imagee
         imageView.tintColor = .black
     }
     
-    func setupLabel(typeName: String) {
+    func setupLabel(for typeName: String) {
         typeNameLabel.text = typeName
     }
 }

@@ -14,7 +14,6 @@ protocol DetailPresenterDelegate: AnyObject {
 protocol DetailsPresenter: AnyObject {
     func setDelegate(pokemonDetailsView: PokemonDetailsView)
     func viewDidLoad()
-    func chooseTypeIcon(for typeName: String) -> String
 }
 
 class PokemonDetailsPresenter: DetailsPresenter {
@@ -38,30 +37,6 @@ class PokemonDetailsPresenter: DetailsPresenter {
         dataFetchService.fetchImage(fromNetwork: networkConnection, urlString: imageUrl) { [weak self] imageData in
             guard let imageData = imageData else { return }
             self?.pokemonDetailsView?.setImage(with: imageData)
-        }
-    }
-    
-    func chooseTypeIcon(for typeName: String) -> String {
-        switch typeName {
-        case "fighting": return "figure.boxing"
-        case "normal": return "pawprint"
-        case "flying": return "wind"
-        case "ground": return "pawprint.fill"
-        case "rock": return "mountain.2.fill"
-        case "poison": return "drop.triangle.fill"
-        case "bug": return "ladybug"
-        case "ghost": return "aqi.medium"
-        case "steel": return "gearshape.fill"
-        case "fire": return "flame.fill"
-        case "water": return "drop.fill"
-        case "grass": return "leaf"
-        case "electric": return "bolt"
-        case "physic": return "cross.fill"
-        case "ice": return "snow"
-        case "dragon": return "hurricane.circle"
-        case "dark": return "moonphase.full.moon"
-        case "fairy": return "sparkles"
-        default: return "pawprint"
         }
     }
 }

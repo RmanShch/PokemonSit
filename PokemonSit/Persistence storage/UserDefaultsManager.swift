@@ -22,7 +22,6 @@ class UserDefaultsManager: PersistenceManager {
     }
     
     func getData(for key: String) -> Data? {
-//        userDefaults.object(forKey: key)
         userDefaults.data(forKey: key)
     }
     

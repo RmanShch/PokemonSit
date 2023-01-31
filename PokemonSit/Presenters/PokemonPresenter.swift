@@ -18,11 +18,6 @@ class PokemonPresenter {
         willSet {
             pokemonView?.reloadData()
         }
-        //        didSet {
-        //            if networkConnection == true {
-        //                pokemonView?.reloadData()
-        //            }
-        //        }
     }
     
     func setDelegate(pokemonView: PokemonView) {
@@ -58,15 +53,6 @@ class PokemonPresenter {
         })
     }
     
-//    func loadSavedPokemons() {
-//        dataFetchService?.fetchPokemonList(fromNetwork: .dataBase, completion: { [weak self] pokemonList in
-//            guard let pokemons = pokemonList?.results else { return }
-//            self?.pokemons += pokemons
-//            self?.nextUrl = pokemonList?.next
-//            self?.pokemonView?.pokemonsLoaded(pokemons: pokemons)
-//        })
-//    }
-    
     func pokemonSelected(pokemon: Pokemon) {
         networkConnection = reachabilityChecker.isConnectedToNetwork()
         let urlString = pokemon.url
@@ -88,7 +74,6 @@ class PokemonPresenter {
         }
     }
     
-
     func loadMorePokemons() {
         networkConnection = reachabilityChecker.isConnectedToNetwork()
         guard let urlString = nextUrl else {
@@ -105,7 +90,6 @@ class PokemonPresenter {
             }
             self?.pokemonView?.loadingFinished()
             self?.nextUrl = pokemonList?.next
-            print(self?.pokemons.count)
         }
     }
 

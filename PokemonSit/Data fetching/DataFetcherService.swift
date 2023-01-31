@@ -7,11 +7,6 @@
 
 import Foundation
 
-//enum DataSource {
-//    case network
-//    case dataBase
-//}
-
 class DataFetcherService {
     var decoder: GenericDecoder
     var persistenceManager: PersistenceManager
