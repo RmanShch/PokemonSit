@@ -11,7 +11,7 @@ protocol PokemonDetailsView: AnyObject {
     func setImage(with imageData: Data?)
 }
 
-class PokemonDetailsViewController: UIViewController, PokemonDetailsView {
+final class PokemonDetailsViewController: UIViewController, PokemonDetailsView {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var weightLabel: UILabel!
@@ -36,7 +36,7 @@ class PokemonDetailsViewController: UIViewController, PokemonDetailsView {
         navigationItem.title = name
     }
     
-    func setSubviews() {
+    private func setSubviews() {
         nameLabel.text = name
         weightLabel.text = "Weight: \(String(describing: weight ?? 0))"
         heightLabel.text = "Height: \(String(describing: height ?? 0))"

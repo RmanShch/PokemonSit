@@ -13,9 +13,9 @@ protocol PersistenceManager {
     func deleteData(for key: String)
 }
 
-class UserDefaultsManager: PersistenceManager {
+final class UserDefaultsManager: PersistenceManager {
     
-    let userDefaults = UserDefaults()
+    private let userDefaults = UserDefaults()
     
     func saveData(data: Data?, for key: String) {
         userDefaults.set(data, forKey: key)

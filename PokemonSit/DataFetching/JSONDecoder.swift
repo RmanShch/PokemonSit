@@ -11,7 +11,7 @@ protocol GenericDecoder {
     func decodeJSON<T: Decodable>(type: T.Type, from data: Data?) -> T?
 }
 
-class JsonDecoder: GenericDecoder {
+final class JsonDecoder: GenericDecoder {
     
     func decodeJSON<T: Decodable>(type: T.Type, from data: Data?) -> T? {
         let decoder = JSONDecoder()

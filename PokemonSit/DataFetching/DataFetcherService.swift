@@ -7,10 +7,10 @@
 
 import Foundation
 
-class DataFetcherService {
-    var decoder: GenericDecoder
-    var persistenceManager: PersistenceManager
-    var networkService: Networking
+final class DataFetcherService {
+    private var decoder: GenericDecoder
+    private var persistenceManager: PersistenceManager
+    private var networkService: Networking
     
     
     init(persistenceManager:PersistenceManager, decoder: GenericDecoder = JsonDecoder(), networkService: Networking = NetworkService()) {

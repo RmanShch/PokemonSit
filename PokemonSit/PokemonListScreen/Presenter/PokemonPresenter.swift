@@ -7,7 +7,7 @@
 
 import Foundation
 
-class PokemonPresenter {
+final class PokemonPresenter {
     weak private var pokemonView: PokemonView?
     private var dataFetchService: DataFetcherService?
     private var reachabilityChecker: Reachability!

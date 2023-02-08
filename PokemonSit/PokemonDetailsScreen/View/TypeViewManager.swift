@@ -15,7 +15,7 @@ protocol ColorAndIconManager: AnyObject {
     func getIcon(for typeName: String) -> UIImage?
 }
 
-class TypeViewManager: ColorAndIconManager {
+final class TypeViewManager: ColorAndIconManager {
     func getColor(for typeName: String) -> UIColor {
         return chooseColor(for: typeName)
     }

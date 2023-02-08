@@ -16,7 +16,7 @@ protocol PokemonView: AnyObject {
     func reloadData()
 }
 
-class PokemonListViewController: UIViewController, PokemonView {
+final class PokemonListViewController: UIViewController, PokemonView {
     @IBOutlet weak var pokemonsTableView: UITableView!
     
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!

@@ -12,7 +12,7 @@ protocol Reachability {
     func isConnectedToNetwork() -> Bool
 }
 
-class ReachabilityChecker: Reachability {
+final class ReachabilityChecker: Reachability {
 
     func isConnectedToNetwork() -> Bool {
         

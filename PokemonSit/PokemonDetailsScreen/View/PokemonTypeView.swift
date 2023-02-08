@@ -8,16 +8,16 @@
 import Foundation
 import UIKit
 
-class PokemonTypeView: UIView {
+final class PokemonTypeView: UIView {
     var typeViewManager: ColorAndIconManager?
     
-    lazy var imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 5, y: 5, width: 30, height: 30))
         imageView.image = UIImage(systemName: "flame")
         return imageView
     }()
     
-    lazy var typeNameLabel: UILabel = {
+    private lazy var typeNameLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 40, y: 5, width: 75, height: 30))
         
         label.font = UIFont(name: "Kohinoor Gujarati", size: 20.0)

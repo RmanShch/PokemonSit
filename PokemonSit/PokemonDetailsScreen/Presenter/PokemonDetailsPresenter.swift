@@ -16,10 +16,10 @@ protocol DetailsPresenter: AnyObject {
     func viewDidLoad()
 }
 
-class PokemonDetailsPresenter: DetailsPresenter {
+final class PokemonDetailsPresenter: DetailsPresenter {
     weak private var pokemonDetailsView: PokemonDetailsView?
-    let dataFetchService: DataFetcherService
-    let pokemon: PokemonDetails
+    private let dataFetchService: DataFetcherService
+    private let pokemon: PokemonDetails
     weak var delegate: DetailPresenterDelegate?
     
     init(pokemon: PokemonDetails, dataFetchService: DataFetcherService) {
