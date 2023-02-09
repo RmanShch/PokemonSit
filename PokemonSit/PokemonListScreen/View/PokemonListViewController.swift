@@ -124,7 +124,6 @@ extension PokemonListViewController: UIScrollViewDelegate {
         guard !isLoading else { return }
         if offsetY > (contentHeight - myHeight) {
             isLoading = true
-            activityIndicatorView.startAnimating()
             pokemonPresenter.loadMorePokemons()
         }
     }

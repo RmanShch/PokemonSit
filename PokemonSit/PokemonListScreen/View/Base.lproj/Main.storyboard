@@ -114,7 +114,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="CaP-BF-R3X"/>
-                        <color key="backgroundColor" red="0.99607843159999998" green="0.96862745289999996" blue="0.94117647410000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="CaP-BF-R3X" firstAttribute="trailing" secondItem="muZ-G3-WxJ" secondAttribute="trailing" constant="20" id="2Eh-mp-avz"/>
                             <constraint firstItem="6Rh-IE-oWJ" firstAttribute="leading" secondItem="CaP-BF-R3X" secondAttribute="leading" constant="50" id="2W0-R0-Fy2"/>
@@ -126,7 +126,7 @@
                             <constraint firstItem="9cy-Mv-g1p" firstAttribute="leading" secondItem="CaP-BF-R3X" secondAttribute="leading" constant="25" id="Q8s-UU-Kqv"/>
                             <constraint firstItem="9cy-Mv-g1p" firstAttribute="top" secondItem="6Rh-IE-oWJ" secondAttribute="bottom" constant="5" id="Re9-iq-gbQ"/>
                             <constraint firstItem="CaP-BF-R3X" firstAttribute="trailing" secondItem="6Rh-IE-oWJ" secondAttribute="trailing" constant="50" id="SJu-cC-MBe"/>
-                            <constraint firstItem="iYe-eY-Zzg" firstAttribute="leading" secondItem="9cy-Mv-g1p" secondAttribute="trailing" constant="5" id="XlS-vw-hI7"/>
+                            <constraint firstItem="iYe-eY-Zzg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9cy-Mv-g1p" secondAttribute="trailing" constant="5" id="XlS-vw-hI7"/>
                             <constraint firstAttribute="trailing" secondItem="iYe-eY-Zzg" secondAttribute="trailing" constant="25" id="hXP-Gp-rwB"/>
                             <constraint firstItem="ZmS-bd-JF8" firstAttribute="top" secondItem="CaP-BF-R3X" secondAttribute="top" id="jll-89-bNO"/>
                             <constraint firstItem="ZmS-bd-JF8" firstAttribute="leading" secondItem="CaP-BF-R3X" secondAttribute="leading" id="jwL-Dx-hpg"/>
@@ -166,6 +166,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="secondarySystemGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
