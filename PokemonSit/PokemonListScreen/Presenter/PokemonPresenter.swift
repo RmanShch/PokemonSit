@@ -75,12 +75,17 @@ final class PokemonPresenter {
         dataFetchService?.fetchMorePokemons(fromNetwork: networkConnection, urlString: urlString) { [weak self] pokemonList in
             guard let pokemons = pokemonList,
                   let pokemonsCountBeforeUpdate = self?.pokemons.count else { return }
-            for i in 0...pokemons.results.count-1 {
-                let indexPath = [IndexPath(row: i + pokemonsCountBeforeUpdate, section: 0)]
-                let pokemon = pokemons.results[i]
-                self?.pokemons.append(pokemon)
-                self?.pokemonView?.pokemonLoaded(pokemon: pokemon, for: indexPath)
+//            for i in 0...pokemons.results.count-1 {
+//                let indexPath = [IndexPath(row: i + pokemonsCountBeforeUpdate, section: 0)]
+//                let pokemon = pokemons.results[i]
+//                self?.pokemons.append(pokemon)
+//                self?.pokemonView?.pokemonLoaded(pokemon: pokemon, for: indexPath)
+//            }
+            let indexPaths = pokemons.results.indices.map {
+                IndexPath(row: $0 + pokemonsCountBeforeUpdate, section: 0)
             }
+            self?.pokemons += pokemons.results
+            self?.pokemonView?.addMorePokemons(pokemons: pokemons.results, for: indexPaths)
             self?.pokemonView?.loadingFinished()
             self?.nextUrl = pokemonList?.next
         }

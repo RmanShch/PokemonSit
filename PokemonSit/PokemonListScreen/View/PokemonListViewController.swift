@@ -14,9 +14,10 @@ protocol PokemonView: AnyObject {
     func setUpDetailsView(name: String, weight: Int, height: Int, types: [String], presenter: PokemonDetailsPresenter)
     func showAlert(title: String, message: String)
     func reloadData()
+    func addMorePokemons(pokemons: [Pokemon], for indexPaths: [IndexPath])
 }
 
-final class PokemonListViewController: UIViewController, PokemonView {
+final class PokemonListViewController: UIViewController {
     @IBOutlet weak var pokemonsTableView: UITableView!
     
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
@@ -39,7 +40,9 @@ final class PokemonListViewController: UIViewController, PokemonView {
         pokemonsTableView.alpha = 0
         pokemonsTableView.register(UINib(nibName: "PokemonTableViewCell", bundle: nil), forCellReuseIdentifier: "pokeCell")
     }
-    
+}
+
+extension PokemonListViewController: PokemonView {
     func pokemonsLoaded(pokemons: [Pokemon]) {
         self.pokemons = pokemons
         UIView.animate(withDuration: 0.3) {
@@ -84,6 +87,10 @@ final class PokemonListViewController: UIViewController, PokemonView {
         pokemonsTableView.reloadData()
     }
     
+    func addMorePokemons(pokemons: [Pokemon], for indexPaths: [IndexPath]) {
+        self.pokemons += pokemons
+        pokemonsTableView.insertRows(at: indexPaths, with: .none)
+    }
 }
 
 extension PokemonListViewController: UITableViewDelegate {
